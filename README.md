@@ -25,6 +25,6 @@ Run with postman collection **./postman**.
    cd k6
    k6 run get-script.js
    ```
-  ![image](images/post-results.png)
+  ![image](images/get-results.png)
 
 ![image](images/posts.png)
