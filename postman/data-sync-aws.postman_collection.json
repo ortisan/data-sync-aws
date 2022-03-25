@@ -1,0 +1,110 @@
+{
+	"info": {
+		"_postman_id": "d05e4315-5f8e-49d3-a0ee-14eaaa4f296c",
+		"name": "data-sync-aws",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetById",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/posts/{{postId}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"posts",
+						"{{postId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(responseBody);",
+							"var jsonData = JSON.parse(responseBody);",
+							"pm.environment.set(\"personId\", jsonData.id);",
+							"pm.collectionVariables.set(\"personId\", jsonData.id);",
+							"pm.globals.set(\"personId\", jsonData.id);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var author_uuids = [",
+							"    \"2b325354-f11d-4530-8b27-70c63988d095\",",
+							"    \"b70ac1cf-ff78-45e8-8017-520763065f68\",",
+							"    \"b989e6df-2704-4265-981f-3913babf134e\"",
+							"];",
+							"",
+							"var idx = Math.floor(Math.random() * 2);",
+							"",
+							"pm.collectionVariables.set(\"author_id\", author_uuids[idx]);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"title\": \"Testing POG\",\n    \"publish_date\": \"2021-01-01\",\n    \"authors\": [\n        {\n            \"id\": \"{{author_id}}\",\n            \"roles\": [\"author\"]\n        }\n    ]\n    \n}"
+				},
+				"url": {
+					"raw": "http://localhost:8080/posts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"posts"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "personId",
+			"value": ""
+		},
+		{
+			"key": "author_id",
+			"value": ""
+		},
+		{
+			"key": "postId",
+			"value": ""
+		}
+	]
+}
